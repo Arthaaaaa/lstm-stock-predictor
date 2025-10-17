@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Prediksi Harga Saham LSTM</title>
+  <title>Prediksi Harga Saham APEX</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -27,15 +27,41 @@
     h2 {
       color: #007bff;
     }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>📈 Prediksi Harga Saham (LSTM)</h1>
-    <p>Prediksi harga penutupan berikutnya:</p>
-    <h2>{{ pred_price | round(2) }}</h2>
-    <img src="data:image/png;base64,{{ plot_url }}" alt="Grafik Prediksi">
-    <p style="margin-top:20px;">Model: LSTM - Data Harian Saham</p>
+    <h1>📈 Prediksi Harga Saham (APEX)</h1>
+
+    <div id="result-area">
+      <p>Klik tombol di bawah untuk menghitung prediksi harga berikutnya:</p>
+      <button onclick="predictNext()">🔮 Prediksi Hari Berikutnya</button>
+      <h2 id="predicted-price"></h2>
+      <img id="plot" src="data:image/png;base64,{{ plot_url }}" alt="Grafik Prediksi">
+    </div>
   </div>
+
+  <script>
+    async function predictNext() {
+      document.getElementById("predicted-price").innerText = "⏳ Memproses...";
+      const response = await fetch("/predict", { method: "POST" });
+      const data = await response.json();
+      document.getElementById("predicted-price").innerText = "📊 Harga Prediksi: " + data.predicted_price.toFixed(2);
+      document.getElementById("plot").src = "data:image/png;base64," + data.plot_url;
+    }
+  </script>
 </body>
 </html>

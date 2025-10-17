@@ -10,4 +10,10 @@ __pycache__/
 *.tar
 *.gz
 *.whl
+*.db
+*.sqlite3
+*.log
 .DS_Store
+
+
+
